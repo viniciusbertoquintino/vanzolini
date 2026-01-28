@@ -3,9 +3,11 @@ import uuid
 import os
 from generate_ppt import generate_ppt
 
+st.image("assets/logo.jpg", width=180)
+
 st.set_page_config(page_title="Gerador de PPT", layout="centered")
 
-st.title("Gerador de Apresentações PowerPoint")
+st.title("Gerador de Apresentações")
 
 template_file = st.file_uploader(
     "Template PowerPoint (.pptx)", type=["pptx"]
