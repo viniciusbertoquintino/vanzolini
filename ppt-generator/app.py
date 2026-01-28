@@ -3,6 +3,10 @@ import uuid
 import os
 from generate_ppt import generate_ppt
 
+os.makedirs("uploads", exist_ok=True)
+os.makedirs("outputs", exist_ok=True)
+
+
 st.image("assets/logo.jpg", width=180)
 
 st.set_page_config(page_title="Gerador de PPT", layout="centered")
