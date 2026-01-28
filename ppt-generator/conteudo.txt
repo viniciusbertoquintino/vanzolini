@@ -12,8 +12,3 @@ Texto exatamente como deve aparecer.
 Título do Slide 3
 Este é o texto do terceiro slide.
 Nada aqui pode ser alterado.
-
-# Slide 4
-Título do Slide 4
-Este é o texto do quarto slide.
-Nada aqui pode ser alterado.
