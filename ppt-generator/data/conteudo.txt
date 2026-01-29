@@ -1,14 +1,17 @@
-# Slide 1
-Título do Slide 1
-Este é o texto do primeiro slide.
-Nada aqui pode ser alterado.
+#CAPA
+Apresentação Automática
+Subtítulo da apresentação
 
-# Slide 2
-Título do Slide 2
-Este é o texto do segundo slide.
-Texto exatamente como deve aparecer.
+#1COL
+Objetivo
+Texto do slide com uma coluna
 
-# Slide 3
-Título do Slide 3
-Este é o texto do terceiro slide.
-Nada aqui pode ser alterado.
+#2COL
+Arquitetura
+Coluna 1: Backend
+Coluna 2: Frontend
+
+#IMG
+Resultados
+imagem.png
+Descrição do gráfico
