@@ -1,1 +1,5 @@
-vanzolini/ppt-generator/venv_ppt
+uploads/
+outputs/
+__pycache__/
+venv/
+.env
