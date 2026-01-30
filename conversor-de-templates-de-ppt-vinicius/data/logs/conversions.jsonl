@@ -1,0 +1,23 @@
+{"ts": "2025-08-12T13:24:27.622241", "event": "conversion_start", "conversion_id": "conversion_20250812_132427", "template": "MD_Template-2026_AI - Ciências Natureza_v3.pptx", "zip": "MA_ID119224_GEOGRAFIA_1AI_AULA8.zip"}
+{"ts": "2025-08-12T13:24:37.906674", "event": "conversion_done", "conversion_id": "conversion_20250812_132427", "total": 1, "files": ["MA_ID119224_GEOGRAFIA_1AI_AULA8.pptx"]}
+{"ts": "2025-08-12T13:57:49.357579", "event": "conversion_start", "conversion_id": "conversion_20250812_135749", "template": "MD_Template-2026_AI - Ciências Natureza_v3.pptx", "zip": "MA_ID119224_GEOGRAFIA_1AI_AULA8.zip"}
+{"ts": "2025-08-12T13:58:00.743267", "event": "conversion_done", "conversion_id": "conversion_20250812_135749", "total": 1, "files": ["MA_ID119224_GEOGRAFIA_1AI_AULA8.pptx"]}
+{"ts": "2025-08-12T13:58:37.233633", "event": "download", "conversion_id": "conversion_20250812_135749"}
+{"ts": "2025-08-12T15:31:25.120226", "event": "conversion_start", "conversion_id": "conversion_20250812_153125", "template": "MD_Template-2026_AI - Ciências Natureza_v3.pptx", "zip": "MA_ID119224_GEOGRAFIA_1AI_AULA8.zip"}
+{"ts": "2025-08-12T15:31:36.725655", "event": "conversion_done", "conversion_id": "conversion_20250812_153125", "total": 1, "files": ["MA_ID119224_GEOGRAFIA_1AI_AULA8.pptx"]}
+{"ts": "2025-08-12T15:31:42.479594", "event": "download", "conversion_id": "conversion_20250812_153125"}
+{"ts": "2025-08-12T15:39:32.941884", "event": "conversion_start", "conversion_id": "conversion_20250812_153932", "template": "MD_Template-2026_AI - Ciências Natureza_v3.pptx", "zip": "MA_ID119224_GEOGRAFIA_1AI_AULA8.zip"}
+{"ts": "2025-08-12T15:39:43.639745", "event": "conversion_done", "conversion_id": "conversion_20250812_153932", "total": 1, "files": ["MA_ID119224_GEOGRAFIA_1AI_AULA8.pptx"]}
+{"ts": "2025-08-12T15:39:47.497587", "event": "download", "conversion_id": "conversion_20250812_153932"}
+{"ts": "2025-08-12T15:44:52.135426", "event": "conversion_start", "conversion_id": "conversion_20250812_154452", "template": "MD_Template-2026_AI - Ciências Natureza_v3 n.pptx", "zip": "OneDrive_1_12-08-2025.zip"}
+{"ts": "2025-08-12T15:45:20.286783", "event": "conversion_done", "conversion_id": "conversion_20250812_154452", "total": 5, "files": ["AULA 1.pptx", "AULA 2.pptx", "AULA 3.pptx", "AULA 4.pptx", "AULA 5.pptx"]}
+{"ts": "2025-08-12T15:45:24.974973", "event": "download", "conversion_id": "conversion_20250812_154452"}
+{"ts": "2025-08-14T18:52:58.188307", "event": "conversion_start", "conversion_id": "conversion_20250814_185258", "template": "MD_Template-2026_AI - Ciências Natureza_v3 n.pptx", "zip": "OneDrive_1_12-08-2025.zip"}
+{"ts": "2025-08-14T18:53:31.076179", "event": "conversion_done", "conversion_id": "conversion_20250814_185258", "total": 5, "files": ["AULA 1.pptx", "AULA 2.pptx", "AULA 3.pptx", "AULA 4.pptx", "AULA 5.pptx"]}
+{"ts": "2025-08-14T18:53:52.388996", "event": "download", "conversion_id": "conversion_20250814_185258"}
+{"ts": "2025-08-15T14:34:27.702952", "event": "conversion_start", "conversion_id": "conversion_20250815_143427", "template": "MD_Template-2026_AI - Ciências Natureza_v3 n.pptx", "zip": "OneDrive_1_12-08-2025.zip"}
+{"ts": "2025-08-15T14:34:49.172422", "event": "conversion_done", "conversion_id": "conversion_20250815_143427", "total": 5, "files": ["AULA 1.pptx", "AULA 2.pptx", "AULA 3.pptx", "AULA 4.pptx", "AULA 5.pptx"]}
+{"ts": "2025-08-15T14:37:09.733760", "event": "download", "conversion_id": "conversion_20250815_143427"}
+{"ts": "2025-08-20T15:44:04.969446", "event": "conversion_start", "conversion_id": "conversion_20250820_154404", "template": "MD_Template-2026_AI - Ciências Natureza_v3 n.pptx", "zip": "OneDrive_1_12-08-2025.zip"}
+{"ts": "2025-08-20T15:44:24.050931", "event": "conversion_done", "conversion_id": "conversion_20250820_154404", "total": 5, "files": ["AULA 1.pptx", "AULA 2.pptx", "AULA 3.pptx", "AULA 4.pptx", "AULA 5.pptx"]}
+{"ts": "2025-08-20T15:44:29.049143", "event": "download", "conversion_id": "conversion_20250820_154404"}
