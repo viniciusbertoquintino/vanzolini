@@ -1,0 +1,4 @@
+venv/
+uploads/
+outputs/
+__pycache__/
