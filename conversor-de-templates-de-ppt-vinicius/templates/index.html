@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conversor de Apresentações - Fundação Vanzolini</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'vanzolini': '#1E2063',
+            'vanzolini-light': '#2D2F7A',
+            'vanzolini-dark': '#151847'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .upload-area { border: 2px dashed #1E2063; transition: all .2s ease; }
+    .upload-area:hover { border-color: #2D2F7A; background-color: #f8fafc; }
+    .upload-area.dragover { border-color: #2D2F7A; background-color: #f1f5f9; }
+    .progress-bar { transition: width .3s ease; }
+    .fade-in { animation: fadeIn .4s ease-in; }
+    @keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header compacto -->
+  <header class="bg-vanzolini shadow-sm">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between h-14">
+        <div class="flex items-center space-x-3">
+          <img src="{{ url_for('static', filename='logo-vanzolini.svg') }}" alt="Fundação Vanzolini" class="h-8 w-auto">
+          <h1 class="text-lg sm:text-xl font-semibold text-white"></h1>
+        </div>
+        <div id="status-indicator" class="flex items-center space-x-2">
+          <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+          <span class="text-xs sm:text-sm text-gray-200">Sistema Online</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <!-- Grid 2 colunas: conteúdo + sidebar -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Coluna principal (2/3) -->
+      <section class="lg:col-span-2">
+        <!-- Intro mais enxuta -->
+        <div class="text-center mb-5">
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">Conversor PowerPoint</h2>
+          <p class="text-base text-gray-600">
+            Aplique automaticamente um template às suas apresentações. Envie um arquivo de template e um ZIP com as apresentações para conversão em lote.
+          </p>
+        </div>
+
+        <!-- Formulário -->
+        <div class="bg-white rounded-lg shadow p-4 sm:p-5">
+          <form id="uploadForm" enctype="multipart/form-data" class="space-y-5">
+            <!-- Template -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">1. Template (.ppt ou .pptx)</label>
+              <div class="upload-area rounded-lg p-5 text-center cursor-pointer" onclick="document.getElementById('template').click()">
+                <input type="file" id="template" name="template" accept=".ppt,.pptx" class="hidden" required />
+                <div id="template-display">
+                  <svg class="mx-auto h-10 w-10 text-vanzolini mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                  <p class="text-vanzolini font-medium">Clique para selecionar o template</p>
+                  <p class="text-gray-500 text-xs mt-1">Aceita: .ppt, .pptx</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ZIP -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">2. Apresentações (.zip)</label>
+              <div class="upload-area rounded-lg p-5 text-center cursor-pointer" onclick="document.getElementById('presentations').click()">
+                <input type="file" id="presentations" name="presentations" accept=".zip" class="hidden" required />
+                <div id="presentations-display">
+                  <svg class="mx-auto h-10 w-10 text-vanzolini mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                  <p class="text-vanzolini font-medium">Clique para selecionar o arquivo ZIP</p>
+                  <p class="text-gray-500 text-xs mt-1">Aceita: .zip contendo .ppt/.pptx</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botão -->
+            <div class="text-center">
+              <button type="submit" id="convertBtn"
+                class="bg-vanzolini hover:bg-vanzolini-light text-white font-medium py-2.5 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
+                <span id="convertBtnText">Converter</span>
+                <svg id="convertBtnSpinner" class="hidden animate-spin -ml-1 mr-2 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Progresso -->
+        <div id="progressSection" class="hidden bg-white rounded-lg shadow p-4 mt-5">
+          <h3 class="text-base font-medium text-gray-900 mb-3">Progresso</h3>
+          <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+            <div id="progressBar" class="progress-bar bg-vanzolini h-2 rounded-full" style="width: 0%"></div>
+          </div>
+          <p id="progressText" class="text-sm text-gray-600">
+            Iniciando conversão...
+          </p>
+          <p id="currentFile" class="text-sm text-gray-700 mt-1"></p>
+        </div>
+
+        <!-- Resultado -->
+        <div id="resultsSection" class="hidden bg-white rounded-lg shadow p-4 mt-5">
+          <h3 class="text-base font-medium text-gray-900 mb-3">Conversão Concluída</h3>
+          <div id="resultsContent"></div>
+        </div>
+
+        <!-- Erro -->
+        <div id="errorSection" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mt-5">
+          <div class="flex">
+            <svg class="h-5 w-5 text-red-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+            </svg>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">Erro na Conversão</h3>
+              <p id="errorMessage" class="text-sm text-red-700 mt-1"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sidebar (1/3) -->
+      <aside class="lg:col-span-1">
+        <div class="bg-white rounded-lg shadow p-4 sticky top-4">
+          <h4 class="text-sm font-semibold text-gray-900 mb-3">Como usar</h4>
+          <ul class="list-disc ml-5 text-sm text-gray-700 space-y-2">
+            <li>O <strong>Template</strong> deve ser <code>.ppt</code> ou <code>.pptx</code>.</li>
+            <li>As <strong>Apresentações</strong> devem estar em um único arquivo <code>.zip</code>.</li>
+            <li>Dentro do .zip, serão considerados apenas arquivos <code>.ppt</code> ou <code>.pptx</code>.</li>
+            <li>Arquivos não-PowerPoint dentro do .zip serão ignorados.</li>
+          </ul>
+          <p class="text-xs text-gray-500 mt-3">Dica: mantenha os nomes dos arquivos simples (sem caracteres especiais) para evitar problemas no PowerPoint.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-gray-200 mt-10">
+    <div class="max-w-6xl mx-auto px-4 py-6 text-center">
+      <p class="text-gray-600 text-sm">&copy; 2024 Fundação Vanzolini</p>
+    </div>
+  </footer>
+
+  <script>
+    // ======= Validação no cliente =======
+    const allowedTemplate = ['ppt','pptx'];
+    const getExt = (name) => (name.split('.').pop() || '').toLowerCase();
+
+    function validateTemplate(file) {
+      const ok = file && allowedTemplate.includes(getExt(file.name));
+      return ok ? null : 'Template deve ser .ppt ou .pptx';
+    }
+    function validateZip(file) {
+      const ok = file && getExt(file.name) === 'zip';
+      return ok ? null : 'Apresentações devem estar em um arquivo .zip';
+    }
+
+    function showError(message) {
+      hideAllSections();
+      const err = document.getElementById('errorSection');
+      err.classList.remove('hidden');
+      err.classList.add('fade-in');
+      document.getElementById('errorMessage').textContent = message;
+      resetForm();
+    }
+
+    function updateFileDisplay(displayId, file, label) {
+      const display = document.getElementById(displayId);
+      if (file) {
+        display.innerHTML = `
+          <svg class="mx-auto h-8 w-8 text-green-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-green-600 font-medium text-sm">${label}</p>
+          <p class="text-gray-500 text-xs mt-1">${file.name}</p>
+          <p class="text-gray-400 text-xs mt-1">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+        `;
+      }
+    }
+
+    document.getElementById('template').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      const msg = validateTemplate(file);
+      if (msg) return showError(msg);
+      updateFileDisplay('template-display', file, 'Template selecionado');
+    });
+    document.getElementById('presentations').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      const msg = validateZip(file);
+      if (msg) return showError(msg);
+      updateFileDisplay('presentations-display', file, 'Arquivo ZIP selecionado');
+    });
+
+    // ======= Submissão e progresso (assíncrono) =======
+    let pollInterval = null;
+
+    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const templateFile = document.getElementById('template').files[0];
+      const presentationsFile = document.getElementById('presentations').files[0];
+
+      // Validação cliente
+      let msg = validateTemplate(templateFile) || validateZip(presentationsFile);
+      if (msg) { return showError(msg); }
+
+      const formData = new FormData();
+      formData.append('template', templateFile);
+      formData.append('presentations', presentationsFile);
+
+      showProgress('Enviando arquivos...');
+
+      try {
+        const response = await fetch('/upload', { method: 'POST', body: formData });
+        const result = await response.json();
+
+        if (!result.success) {
+          return showError(result.error || 'Erro desconhecido no envio.');
+        }
+
+        // Temos um conversion_id e a conversão vai ocorrer em segundo plano
+        const conversionId = result.conversion_id;
+        showProgress('Iniciando conversão...');
+
+        // Polling do progresso
+        pollInterval = setInterval(async () => {
+          try {
+            const pr = await fetch(`/progress/${conversionId}`);
+            const data = await pr.json();
+
+            if (data.status === 'processing' || data.status === 'queued') {
+              const total = data.total_files || 0;
+              const done = data.converted_count || 0;
+              const pct = total > 0 ? Math.min(99, Math.floor((done / total) * 100)) : 20;
+              document.getElementById('progressBar').style.width = pct + '%';
+              document.getElementById('progressText').textContent = 'Convertendo apresentações...';
+              if (data.current_file) {
+                document.getElementById('currentFile').textContent = `Arquivo atual: ${data.current_file}`;
+              }
+            } else if (data.status === 'done') {
+              clearInterval(pollInterval);
+              document.getElementById('progressBar').style.width = '100%';
+              document.getElementById('progressText').textContent = 'Conversão concluída!';
+              document.getElementById('currentFile').textContent = '';
+
+              showResults({
+                conversion_id: conversionId,
+                converted_files: data.converted_files || []
+              });
+            } else if (data.status === 'error') {
+              clearInterval(pollInterval);
+              showError(data.error || 'Erro na conversão.');
+            }
+          } catch (err) {
+            // segue tentando
+          }
+        }, 1000);
+
+      } catch (error) {
+        showError('Erro de conexão: ' + error.message);
+      }
+    });
+
+    function showProgress(msg) {
+      hideAllSections();
+      document.getElementById('progressSection').classList.remove('hidden');
+      document.getElementById('convertBtn').disabled = true;
+      document.getElementById('convertBtnText').textContent = 'Convertendo';
+      document.getElementById('convertBtnSpinner').classList.remove('hidden');
+      document.getElementById('progressText').textContent = msg || 'Processando...';
+      document.getElementById('currentFile').textContent = '';
+      document.getElementById('progressBar').style.width = '10%';
+    }
+
+    function showResults(result) {
+      hideAllSections();
+      const content = document.getElementById('resultsContent');
+      content.innerHTML = `
+        <div class="text-center">
+          <svg class="mx-auto h-12 w-12 text-green-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h4 class="text-lg font-medium text-gray-900 mb-2">Conversão realizada com sucesso!</h4>
+          <a href="/download/${result.conversion_id}" 
+             class="bg-vanzolini hover:bg-vanzolini-light text-white font-medium py-2.5 px-5 rounded-lg transition inline-flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Baixar apresentações convertidas
+          </a>
+          <div class="mt-5 text-left">
+            <h5 class="font-medium text-gray-900 mb-2">Arquivos convertidos:</h5>
+            <ul class="text-sm text-gray-700 space-y-1">
+              ${result.converted_files.map(file => `<li>• ${file}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+      document.getElementById('resultsSection').classList.remove('hidden');
+      document.getElementById('resultsSection').classList.add('fade-in');
+      resetForm();
+    }
+
+    function hideAllSections() {
+      document.getElementById('progressSection').classList.add('hidden');
+      document.getElementById('resultsSection').classList.add('hidden');
+      document.getElementById('errorSection').classList.add('hidden');
+    }
+
+    function resetForm() {
+      document.getElementById('convertBtn').disabled = false;
+      document.getElementById('convertBtnText').textContent = 'Converter';
+      document.getElementById('convertBtnSpinner').classList.add('hidden');
+    }
+
+    // Status inicial
+    window.addEventListener('load', async function() {
+      try {
+        const response = await fetch('/status');
+        const status = await response.json();
+        const indicator = document.getElementById('status-indicator');
+        if (status.status === 'online' && status.powerpoint_available) {
+          indicator.innerHTML = `
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span class="text-xs sm:text-sm text-gray-200">Sistema Online</span>
+          `;
+        } else {
+          indicator.innerHTML = `
+            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+            <span class="text-xs sm:text-sm text-gray-200">Sistema Offline</span>
+          `;
+        }
+      } catch (error) { /* ignora */ }
+    });
+
+    // Drag & drop
+    ['template-display', 'presentations-display'].forEach(id => {
+      const element = document.getElementById(id).parentElement;
+      element.addEventListener('dragover', e => { e.preventDefault(); element.classList.add('dragover'); });
+      element.addEventListener('dragleave', e => { e.preventDefault(); element.classList.remove('dragover'); });
+      element.addEventListener('drop', e => {
+        e.preventDefault();
+        element.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          const input = element.querySelector('input[type="file"]');
+          input.files = files;
+          input.dispatchEvent(new Event('change'));
+        }
+      });
+    });
+  </script>
+</body>
+</html>
